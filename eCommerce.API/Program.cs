@@ -1,6 +1,24 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using eCommerce.API.MiddleWare;
+using eCommerce.Core;
+using eCommerce.Infrastructure;
 
-app.MapGet("/", () => "Hello World!");
+var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddInfrastructure();
+builder.Services.AddCore();
+builder.Services.AddControllers();
+
+var app = builder.Build();
+// Route
+
+app.UseExceptionHandlingMiddleware();
+app.UseRouting();
+
+// Auth
+app.UseAuthentication();
+app.UseAuthorization();
+// Map Controllers
+app.MapControllers();
 
 app.Run();
